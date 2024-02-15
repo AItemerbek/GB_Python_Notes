@@ -13,11 +13,26 @@ def create_notes():
     return note
 
 
-def print_dict_to_file(filename: str, new_data):
+def print_note_to_file(filename: str, data: dict):
     with open(filename, 'w', encoding='utf-8') as file:
-        json.dump(new_data, file, ensure_ascii=False, indent=4)
+        json.dump(data, file, ensure_ascii=False, indent=4)
     print()
 
 
-print(create_notes())
-print_dict_to_file('notes.json', create_notes())
+def print_note(data: dict):
+    print(f"Название заметки: {data['name']} ")
+    print(f"{data['body']}")
+
+
+def read_note(filename: str):
+    with open(filename, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    return data
+
+
+new_note = create_notes()
+
+print_note(new_note)
+print_note_to_file('new.json', new_note)
+note = read_note('new.json')
+print(note)
