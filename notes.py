@@ -1,6 +1,10 @@
 import datetime
 import json
+import os
+import lorem
 
+
+# filename = 'notes.json'
 
 def create_notes():
     note_name = input('Input note name: ')
@@ -8,14 +12,20 @@ def create_notes():
     note = dict()
     note['name'] = note_name
     note['body'] = note_body
-    note['timeCreate'] = datetime.datetime.now().isoformat()
-    note['timeChanged'] = datetime.datetime.now().isoformat()
+    note['time_create'] = datetime.datetime.now().isoformat()
+    note['time_changed'] = datetime.datetime.now().isoformat()
     return note
 
 
 def print_note_to_file(filename: str, data: dict):
+    notes = dict()
+    if file_exist(filename):
+        notes = read_note_from_file(filename)
+        notes[count_notes('notes.json') + 1] = data
+    else:
+        notes[1] = data
     with open(filename, 'w', encoding='utf-8') as file:
-        json.dump(data, file, ensure_ascii=False, indent=4)
+        json.dump(notes, file, ensure_ascii=False, indent=4)
     print()
 
 
@@ -24,15 +34,23 @@ def print_note(data: dict):
     print(f"{data['body']}")
 
 
-def read_note(filename: str):
+def read_note_from_file(filename: str):
     with open(filename, 'r', encoding='utf-8') as f:
         data = json.load(f)
     return data
 
 
-new_note = create_notes()
+def file_exist(filename: str):
+    return os.path.isfile(filename)
 
-print_note(new_note)
-print_note_to_file('new.json', new_note)
-note = read_note('new.json')
-print(note)
+
+def count_notes(filename: str):
+    if not file_exist(filename):
+        return 0
+    data = read_note_from_file(filename)
+    return len(data)
+
+
+new_note = create_notes()
+print_note_to_file('notes.json', new_note)
+read_note_from_file("notes.json")
