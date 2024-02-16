@@ -70,10 +70,19 @@ def change_note(filename: str, index: str):
     data = read_note_from_file(filename)
     data[index][body] = input('Введите новый текст заметки: ')
     data[index][time_changed] = datetime.datetime.now().isoformat()
-
     print_all_notes_to_file(filename, data)
     print(f'Запись № {index}  {data[index][name]} была успешно изменена в {data[index][time_changed]}')
 
+
+def delete_note(filename: str, index: str):
+    if count_notes(filename) == 0:
+        print('База заметок пуста или не существует')
+        return
+    ds = read_note_from_file(filename)
+    ds = {k: v for k, v in ds.items() if k != index}
+    ds = {str(k): v for k, v in enumerate(ds.values(), start=1)}
+    print_all_notes_to_file(filename, ds)
+    print(f'Запись №{index} успешно удалена ')
 
 # Support method
 def create_random_notes(quantity: int):
@@ -89,4 +98,6 @@ def create_random_notes(quantity: int):
 
 # create_random_notes(10)
 show_all_notes('test.json')
-change_note('test.json', '2')
+# change_note('test.json', '2')
+delete_note('test.json', '2')
+
