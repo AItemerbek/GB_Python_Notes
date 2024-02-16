@@ -119,7 +119,7 @@ def date_notes_select(filename: str, start: str, end: str):
 
 # create_random_notes(10)
 # show_all_notes(test_file)
-date_notes_select(test_file, '2024-01-01', '2025-01-01')
+# date_notes_select(test_file, '2024-01-01', '2025-01-01')
 # change_note(test_file, '2')
 # delete_note(test_file, '2')
 
