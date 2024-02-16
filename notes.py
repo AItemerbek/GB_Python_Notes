@@ -3,8 +3,10 @@ from datetime import datetime
 import json
 import os
 import lorem
+import messages
 
-notesfile = 'notes.json'
+notes_file = 'notes.json'
+test_file = 'test.json'
 name = 'name'
 body = 'body'
 time_create = 'time_create'
@@ -12,8 +14,8 @@ time_changed = 'time_changed'
 
 
 def create_notes():
-    note_name = input('Input note name: ')
-    note_body = input('Input your notes: ')
+    note_name = input(messages.input_name)
+    note_body = input(messages.input_body)
     note = dict()
     note[name] = note_name
     note[body] = note_body
@@ -57,17 +59,18 @@ def count_notes(filename: str):
 
 def show_all_notes(filename: str):
     if count_notes(filename) == 0:
-        print('База заметок пуста или не существует')
+        print(messages.output_base_not_exist)
         return
     data = read_note_from_file(filename)
     for key in data.keys():
         print(
-            f'Идентификатор: {key}, Имя записи: {data[key][name]}, Дата последнего изменения: {data[key][time_changed]}')
+            f'Идентификатор: {key}, Имя записи: {data[key][name]}, '
+            f'Дата последнего изменения: {data[key][time_changed]}')
 
 
 def change_note(filename: str, index: str):
     if count_notes(filename) == 0:
-        print('База заметок пуста или не существует')
+        print(messages.output_base_not_exist)
         return
     data = read_note_from_file(filename)
     data[index][body] = input('Введите новый текст заметки: ')
@@ -78,7 +81,7 @@ def change_note(filename: str, index: str):
 
 def delete_note(filename: str, index: str):
     if count_notes(filename) == 0:
-        print('База заметок пуста или не существует')
+        print(messages.output_base_not_exist)
         return
     ds = read_note_from_file(filename)
     ds = {k: v for k, v in ds.items() if k != index}
@@ -89,7 +92,7 @@ def delete_note(filename: str, index: str):
 
 # Support method
 def create_random_notes(quantity: int):
-    filename = 'test.json'
+    filename = test_file
     ds = dict()
     for i in range(0, quantity):
         ds[name] = 'note_' + str(i)
@@ -98,11 +101,12 @@ def create_random_notes(quantity: int):
         ds[time_changed] = datetime.datetime.now().isoformat()
         print_note_to_file(filename, ds)
 
+
 def date_notes_select(filename: str, start: str, end: str):
     start_point = datetime.strptime(start, "%Y-%m-%d")
     end_point = datetime.strptime(end, "%Y-%m-%d")
     if count_notes(filename) == 0:
-        print('База заметок пуста или не существует')
+        print(messages.output_base_not_exist)
         return
     data = read_note_from_file(filename)
     for key in data.keys():
@@ -114,8 +118,8 @@ def date_notes_select(filename: str, start: str, end: str):
 
 
 # create_random_notes(10)
-# show_all_notes('test.json')
-date_notes_select('test.json', '2024-01-01', '2025-01-01')
-# change_note('test.json', '2')
-# delete_note('test.json', '2')
+# show_all_notes(test_file)
+date_notes_select(test_file, '2024-01-01', '2025-01-01')
+# change_note(test_file, '2')
+# delete_note(test_file, '2')
 
