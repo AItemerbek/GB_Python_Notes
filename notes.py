@@ -46,6 +46,17 @@ def count_notes(filename: str):
     return len(data)
 
 
+def show_all_notes(filename: str):
+    if count_notes(filename) == 0:
+        print('База заметок пуста или не существует')
+        return
+    data = read_note_from_file(filename)
+    for key in data.keys():
+        name = 'name'
+        time = 'time_changed'
+        print(f'Идентификатор: {key}, Имя записи: {data[key][name]}, Дата последнего изменения: {data[key][time]}')
+
+
 # Support method
 def create_random_notes(quantity: int):
     filename = 'test.json'
@@ -58,4 +69,4 @@ def create_random_notes(quantity: int):
         print_note_to_file(filename, ds)
 
 
-create_random_notes(10)
+show_all_notes('test.json')
