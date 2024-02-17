@@ -18,6 +18,10 @@ def split_string(text, max_length):
 
 def show_note(filename: str, index: str):
     ds = read_note_from_file(filename)
+    if index not in ds:
+        print()
+        print(f'Заметки с идентификатором {index} не существует ')
+        return
     print('╒═══════════╤══════════════════════════════════════╤═════════════════════╤═════════════════════╕')
     print('│ № записи  │ Имя заметки                          │ Создана             │ Изменена            │')
     print('├───────────┼──────────────────────────────────────┼─────────────────────┼─────────────────────┤')
@@ -52,7 +56,3 @@ def show_notes_list(ds: dict):
         print()
     print('╘══════════════════════════════════════════════════════════════════════════════════════════════╛')
 
-
-show_note('test.json', '1')
-data = read_note_from_file('test.json')
-show_notes_list(data)
