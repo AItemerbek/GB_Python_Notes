@@ -20,7 +20,7 @@ def show_note(filename: str, index: str):
     ds = read_note_from_file(filename)
     if index not in ds:
         print()
-        print(f'Заметки с идентфикатором {index} не существует ')
+        print(f'Заметки с идентификатором {index} не существует ')
         return
     print('╒═══════════╤══════════════════════════════════════╤═════════════════════╤═════════════════════╕')
     print('│ № записи  │ Имя заметки                          │ Создана             │ Изменена            │')

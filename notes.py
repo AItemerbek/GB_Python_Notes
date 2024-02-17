@@ -72,11 +72,15 @@ def change_note(filename: str, index: str):
     if count_notes(filename) == 0:
         print(messages.output_base_not_exist)
         return
-    data = read_note_from_file(filename)
-    data[index][body] = input('Введите новый текст заметки: ')
-    data[index][time_changed] = datetime.now().isoformat()
-    print_all_notes_to_file(filename, data)
-    print(f'Запись № {index}  {data[index][name]} была успешно изменена в {data[index][time_changed]}')
+    ds = read_note_from_file(filename)
+    if index not in ds:
+        print()
+        print(f'Заметки с идентификатором {index} не существует ')
+        return
+    ds[index][body] = input('Введите новый текст заметки: ')
+    ds[index][time_changed] = datetime.now().isoformat()
+    print_all_notes_to_file(filename, ds)
+    print(f'Запись № {index}  {ds[index][name]} была успешно изменена в {ds[index][time_changed]}')
 
 
 def erase_note(filename: str, index: str):
@@ -84,6 +88,10 @@ def erase_note(filename: str, index: str):
         print(messages.output_base_not_exist)
         return
     ds = read_note_from_file(filename)
+    if index not in ds:
+        print()
+        print(f'Заметки с идентификатором {index} не существует ')
+        return
     ds = {k: v for k, v in ds.items() if k != index}
     ds = {str(k): v for k, v in enumerate(ds.values(), start=1)}
     print_all_notes_to_file(filename, ds)
@@ -97,8 +105,8 @@ def create_random_notes(quantity: int):
     for i in range(0, quantity):
         ds[name] = 'note_' + str(i)
         ds[body] = lorem.lorem
-        ds[time_create] = datetime.datetime.now().isoformat()
-        ds[time_changed] = datetime.datetime.now().isoformat()
+        ds[time_create] = datetime.now().isoformat()
+        ds[time_changed] = datetime.now().isoformat()
         print_note_to_file(filename, ds)
 
 
@@ -108,18 +116,16 @@ def date_notes_select(filename: str, start: str, end: str):
     if count_notes(filename) == 0:
         print(messages.output_base_not_exist)
         return
-    data = read_note_from_file(filename)
-    for key in data.keys():
-        time_point = datetime.strptime(data[key][time_changed][:9:], "%Y-%m-%d")
-        if start_point < time_point < end_point:
-            print(
-                f'Идентификатор: {key}, Имя записи: {data[key][name]}, '
-                f'Дата последнего изменения: {data[key][time_changed]}')
+    ds = read_note_from_file(filename)
+    filtered_ds = {key: inner_dict for key, inner_dict in ds.items()
+                   if start_point <= datetime.strptime(inner_dict.get(time_create)[:9:], "%Y-%m-%d") <= end_point}
+    return filtered_ds
 
 
-# create_random_notes(10)
-# show_all_notes(test_file)
-# date_notes_select(test_file, '2024-01-01', '2025-01-01')
-# change_note(test_file, '2')
-# delete_note(test_file, '2')
+def check_date_format(date_string: str, format="%Y-%m-%d"):
+    try:
+        datetime.strptime(date_string, format)
+        return True
+    except ValueError:
+        return False
 
