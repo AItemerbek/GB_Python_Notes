@@ -28,12 +28,24 @@ def add_note():
         new_note_name = new_note[name]
         print(f'Запись {new_note_name} успешно сохранена ')
 
+def delete_note():
+    index: str = input(note_index)
+    print(need_to_read_before_delete)
+    answer = input(choice)
+    if answer == '1':
+        show_note(filename, index)
+    print(need_delete)
+    answer = input(choice)
+    if answer == '1':
+        erase_note(filename,index)
+
 
 switch = {
     'menu': view_menu,
     'read': view_note,
     'notes': view_all_notes,
-    'add': add_note
+    'add': add_note,
+    'del': delete_note
 }
 
 

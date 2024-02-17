@@ -79,7 +79,7 @@ def change_note(filename: str, index: str):
     print(f'Запись № {index}  {data[index][name]} была успешно изменена в {data[index][time_changed]}')
 
 
-def delete_note(filename: str, index: str):
+def erase_note(filename: str, index: str):
     if count_notes(filename) == 0:
         print(messages.output_base_not_exist)
         return
