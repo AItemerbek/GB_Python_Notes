@@ -1,6 +1,7 @@
 from notes import *
 from view import *
 from messages import *
+
 filename = 'test.json'
 
 
@@ -18,10 +19,21 @@ def view_all_notes():
     show_notes_list(data)
 
 
+def add_note():
+    new_note = create_notes()
+    print(need_to_save)
+    answer = input(choice)
+    if answer == '1':
+        print_note_to_file(filename, new_note)
+        new_note_name = new_note[name]
+        print(f'Запись {new_note_name} успешно сохранена ')
+
+
 switch = {
     'menu': view_menu,
     'read': view_note,
-    'notes': view_all_notes
+    'notes': view_all_notes,
+    'add': add_note
 }
 
 

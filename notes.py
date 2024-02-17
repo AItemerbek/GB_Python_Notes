@@ -19,8 +19,8 @@ def create_notes():
     note = dict()
     note[name] = note_name
     note[body] = note_body
-    note[time_create] = datetime.datetime.now().isoformat()
-    note[time_changed] = datetime.datetime.now().isoformat()
+    note[time_create] = datetime.now().isoformat()
+    note[time_changed] = datetime.now().isoformat()
     return note
 
 
@@ -74,7 +74,7 @@ def change_note(filename: str, index: str):
         return
     data = read_note_from_file(filename)
     data[index][body] = input('Введите новый текст заметки: ')
-    data[index][time_changed] = datetime.datetime.now().isoformat()
+    data[index][time_changed] = datetime.now().isoformat()
     print_all_notes_to_file(filename, data)
     print(f'Запись № {index}  {data[index][name]} была успешно изменена в {data[index][time_changed]}')
 
