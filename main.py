@@ -1,7 +1,7 @@
 from view import *
 import messages
 
-filename = 'test.json'
+filename = 'notes.json'
 
 
 def view_menu():
@@ -9,11 +9,23 @@ def view_menu():
 
 
 def view_note():
+    if count_notes(filename) == 0:
+        print(messages.output_base_not_exist)
+        return
     index: str = input(messages.note_index)
-    show_note(filename, index)
+    data = read_note_from_file(filename)
+    if index not in data:
+        print()
+        print(f'Заметки с идентификатором {index} не существует. '
+              f'Чтобы просмотреть список заметок используйте команду - notes ')
+        return
+    show_note(data, index)
 
 
 def view_all_notes():
+    if count_notes(filename) == 0:
+        print(messages.output_base_not_exist)
+        return
     data = read_note_from_file(filename)
     show_notes_list(data)
 
@@ -30,35 +42,50 @@ def add_note():
 
 def delete_note():
     index: str = input(messages.note_index)
+    data = read_note_from_file(filename)
+    if index not in data:
+        print()
+        print(f'Заметки с идентификатором {index} не существует. '
+              f'Чтобы просмотреть список заметок используйте команду - notes ')
+        return
     print(messages.need_to_read_before)
     answer = input(messages.choice)
     if answer == '1':
-        show_note(filename, index)
+        show_note(data, index)
     print(messages.need_delete)
     answer = input(messages.choice)
     if answer == '1':
-        erase_note(filename, index)
+        erase_note(data, index)
 
 
 def edit_note():
     index: str = input(messages.note_index)
+    data = read_note_from_file(filename)
+    if index not in data:
+        print()
+        print(f'Заметки с идентификатором {index} не существует. '
+              f'Чтобы просмотреть список заметок используйте команду - notes ')
+        return
     print(messages.need_to_read_before)
     answer = input(messages.choice)
     if answer == '1':
-        show_note(filename, index)
-    print(messages.need_adit)
+        show_note(data, index)
+    print(messages.need_edit)
     answer = input(messages.choice)
     if answer == '1':
-        change_note(filename, index)
+        change_note(data, index)
 
 
 def notes_filter():
+    print(messages.flag_choice)
+    answer = input(messages.choice)
+    flag = answer == '1'
     start = input(messages.input_start_date)
     if check_date_format(start):
         end = input(messages.input_end_date)
         if check_date_format(end):
-            ds = date_notes_select(filename, start, end)
-            show_notes_list(ds)
+            data = date_notes_select(filename, start, end, flag)
+            show_notes_list(data)
         else:
             print(messages.date_format_error)
     else:
@@ -79,7 +106,7 @@ switch = {
 def main():
     print(messages.wellcome)
     while True:
-        key = input(messages.command)
+        key = input(messages.command).lower()
         if key == 'exit':
             break
         if key not in switch:
