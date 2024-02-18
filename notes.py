@@ -1,8 +1,6 @@
-import datetime
 from datetime import datetime
 import json
 import os
-import lorem
 import messages
 
 test_file = 'test.json'
@@ -61,10 +59,6 @@ def change_note(filename: str, index: str):
         print(messages.output_base_not_exist)
         return
     data = read_note_from_file(filename)
-    if index not in data:
-        print()
-        print(f'Заметки с идентификатором {index} не существует ')
-        return
     data[index][body] = input('Введите новый текст заметки: ')
     data[index][time_changed] = datetime.now().isoformat()
     print_all_notes_to_file(filename, data)
@@ -76,26 +70,10 @@ def erase_note(filename: str, index: str):
         print(messages.output_base_not_exist)
         return
     data = read_note_from_file(filename)
-    if index not in data:
-        print()
-        print(f'Заметки с идентификатором {index} не существует ')
-        return
     data = {k: v for k, v in data.items() if k != index}
     data = {str(k): v for k, v in enumerate(data.values(), start=1)}
     print_all_notes_to_file(filename, data)
     print(f'Запись №{index} успешно удалена ')
-
-
-# Support method
-def create_random_notes(quantity: int):
-    filename = test_file
-    data = dict()
-    for i in range(0, quantity):
-        data[name] = 'note_' + str(i)
-        data[body] = lorem.lorem
-        data[time_create] = datetime.now().isoformat()
-        data[time_changed] = datetime.now().isoformat()
-        print_note_to_file(filename, data)
 
 
 def date_notes_select(filename: str, start: str, end: str, flag: bool):

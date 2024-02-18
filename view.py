@@ -16,13 +16,7 @@ def split_string(text, max_length):
     return result
 
 
-def show_note(filename: str, index: str):
-    data = read_note_from_file(filename)
-    if index not in data:
-        print()
-        print(f'Заметки с идентификатором {index} не существует. '
-              f'Чтобы просмотреть список заметок используйте команду - notes ')
-        return
+def show_note(data: dict, index: str):
     print('╒═══════════╤══════════════════════════════════════╤═════════════════════╤═════════════════════╕')
     print('│ № записи  │ Имя заметки                          │ Создана             │ Изменена            │')
     print('├───────────┼──────────────────────────────────────┼─────────────────────┼─────────────────────┤')

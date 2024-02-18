@@ -13,7 +13,13 @@ def view_note():
         print(messages.output_base_not_exist)
         return
     index: str = input(messages.note_index)
-    show_note(filename, index)
+    data = read_note_from_file(filename)
+    if index not in data:
+        print()
+        print(f'Заметки с идентификатором {index} не существует. '
+              f'Чтобы просмотреть список заметок используйте команду - notes ')
+        return
+    show_note(data, index)
 
 
 def view_all_notes():
@@ -36,26 +42,38 @@ def add_note():
 
 def delete_note():
     index: str = input(messages.note_index)
+    data = read_note_from_file(filename)
+    if index not in data:
+        print()
+        print(f'Заметки с идентификатором {index} не существует. '
+              f'Чтобы просмотреть список заметок используйте команду - notes ')
+        return
     print(messages.need_to_read_before)
     answer = input(messages.choice)
     if answer == '1':
-        show_note(filename, index)
+        show_note(data, index)
     print(messages.need_delete)
     answer = input(messages.choice)
     if answer == '1':
-        erase_note(filename, index)
+        erase_note(data, index)
 
 
 def edit_note():
     index: str = input(messages.note_index)
+    data = read_note_from_file(filename)
+    if index not in data:
+        print()
+        print(f'Заметки с идентификатором {index} не существует. '
+              f'Чтобы просмотреть список заметок используйте команду - notes ')
+        return
     print(messages.need_to_read_before)
     answer = input(messages.choice)
     if answer == '1':
-        show_note(filename, index)
-    print(messages.need_adit)
+        show_note(data, index)
+    print(messages.need_edit)
     answer = input(messages.choice)
     if answer == '1':
-        change_note(filename, index)
+        change_note(data, index)
 
 
 def notes_filter():
