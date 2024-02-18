@@ -17,23 +17,24 @@ def split_string(text, max_length):
 
 
 def show_note(filename: str, index: str):
-    ds = read_note_from_file(filename)
-    if index not in ds:
+    data = read_note_from_file(filename)
+    if index not in data:
         print()
-        print(f'Заметки с идентификатором {index} не существует ')
+        print(f'Заметки с идентификатором {index} не существует. '
+              f'Чтобы просмотреть список заметок используйте команду - notes ')
         return
     print('╒═══════════╤══════════════════════════════════════╤═════════════════════╤═════════════════════╕')
     print('│ № записи  │ Имя заметки                          │ Создана             │ Изменена            │')
     print('├───────────┼──────────────────────────────────────┼─────────────────────┼─────────────────────┤')
     print('│ ', end='')
     print("{0:<10}".format(index), end='│ ')
-    print("{0:<37}".format(ds[index][name]), end='│ ')
-    print("{0:<20}".format(ds[index][time_create][:19:]), end='│ ')
-    print("{0:<20}".format(ds[index][time_changed][:19:]), end='│ ')
+    print("{0:<37}".format(data[index][name]), end='│ ')
+    print("{0:<20}".format(data[index][time_create][:19:]), end='│ ')
+    print("{0:<20}".format(data[index][time_changed][:19:]), end='│ ')
     print()
     print('├───────────┴──────────────────────────────────────┴─────────────────────┴─────────────────────┤')
     max_line = 93
-    text = split_string(ds[index][body], max_line)
+    text = split_string(data[index][body], max_line)
     for i in range(len(text)):
         print('│ ', end='')
         print("{0:<93}".format(text[i]), end='│ ')
@@ -42,17 +43,17 @@ def show_note(filename: str, index: str):
     print()
 
 
-def show_notes_list(ds: dict):
+def show_notes_list(data: dict):
     print('Список заметок')
     print('╒═══════════╤══════════════════════════════════════╤═════════════════════╤═════════════════════╕')
     print('│ № записи  │ Имя заметки                          │ Создана             │ Изменена            │')
     print('├───────────┼──────────────────────────────────────┼─────────────────────┼─────────────────────┤')
-    for k in ds.keys():
+    for k in data.keys():
         print('│ ', end='')
         print("{0:<10}".format(k), end='│ ')
-        print("{0:<37}".format(ds[k][name]), end='│ ')
-        print("{0:<20}".format(ds[k][time_create][:19:]), end='│ ')
-        print("{0:<20}".format(ds[k][time_changed][:19:]), end='│ ')
+        print("{0:<37}".format(data[k][name]), end='│ ')
+        print("{0:<20}".format(data[k][time_create][:19:]), end='│ ')
+        print("{0:<20}".format(data[k][time_changed][:19:]), end='│ ')
         print()
     print('╘══════════════════════════════════════════════════════════════════════════════════════════════╛')
 
